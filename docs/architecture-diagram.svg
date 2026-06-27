@@ -1,0 +1,87 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4B5D55"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="760" fill="#F6F8F5"/>
+  <text x="600" y="40" text-anchor="middle" font-size="22" font-weight="800" fill="#0B2E1F">Prakhar Green Energy Solutions — Architecture</text>
+
+  <!-- Client layer -->
+  <rect x="40" y="80" width="1120" height="100" rx="14" fill="#ffffff" stroke="#1E9E5A" stroke-width="2"/>
+  <text x="60" y="105" font-size="14" font-weight="700" fill="#0B2E1F">Client (Browser)</text>
+  <rect x="60" y="118" width="230" height="48" rx="10" fill="#EAFBF1" stroke="#1E9E5A"/>
+  <text x="175" y="146" text-anchor="middle" font-size="13" fill="#0B2E1F">Marketing Pages</text>
+  <rect x="310" y="118" width="230" height="48" rx="10" fill="#EAFBF1" stroke="#1E9E5A"/>
+  <text x="425" y="146" text-anchor="middle" font-size="13" fill="#0B2E1F">Customer Dashboard</text>
+  <rect x="560" y="118" width="230" height="48" rx="10" fill="#EAFBF1" stroke="#1E9E5A"/>
+  <text x="675" y="146" text-anchor="middle" font-size="13" fill="#0B2E1F">Admin Dashboard</text>
+  <rect x="810" y="118" width="320" height="48" rx="10" fill="#FEF8E9" stroke="#F2B229"/>
+  <text x="970" y="146" text-anchor="middle" font-size="13" fill="#0B2E1F">Lead Forms (Modal / Contact / Calculator)</text>
+
+  <line x1="600" y1="180" x2="600" y2="220" stroke="#4B5D55" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Next.js layer -->
+  <rect x="40" y="220" width="1120" height="160" rx="14" fill="#ffffff" stroke="#0B2E1F" stroke-width="2"/>
+  <text x="60" y="245" font-size="14" font-weight="700" fill="#0B2E1F">Next.js 14 App Router (Vercel)</text>
+
+  <rect x="60" y="258" width="250" height="100" rx="10" fill="#0B2E1F"/>
+  <text x="185" y="280" text-anchor="middle" font-size="13" fill="#F2B229" font-weight="700">Middleware</text>
+  <text x="185" y="300" text-anchor="middle" font-size="11" fill="#E7F2EC">Route protection</text>
+  <text x="185" y="316" text-anchor="middle" font-size="11" fill="#E7F2EC">Role-based access</text>
+  <text x="185" y="332" text-anchor="middle" font-size="11" fill="#E7F2EC">(/dashboard, /admin)</text>
+
+  <rect x="330" y="258" width="250" height="100" rx="10" fill="#0B2E1F"/>
+  <text x="455" y="280" text-anchor="middle" font-size="13" fill="#F2B229" font-weight="700">API Routes</text>
+  <text x="455" y="300" text-anchor="middle" font-size="11" fill="#E7F2EC">/api/leads, /api/contact</text>
+  <text x="455" y="316" text-anchor="middle" font-size="11" fill="#E7F2EC">/api/calculator, /api/auth</text>
+  <text x="455" y="332" text-anchor="middle" font-size="11" fill="#E7F2EC">/api/admin/*, /api/dashboard</text>
+
+  <rect x="600" y="258" width="250" height="100" rx="10" fill="#0B2E1F"/>
+  <text x="725" y="280" text-anchor="middle" font-size="13" fill="#F2B229" font-weight="700">Validation + Security</text>
+  <text x="725" y="300" text-anchor="middle" font-size="11" fill="#E7F2EC">Zod schemas</text>
+  <text x="725" y="316" text-anchor="middle" font-size="11" fill="#E7F2EC">Rate limiting (Upstash)</text>
+  <text x="725" y="332" text-anchor="middle" font-size="11" fill="#E7F2EC">Honeypot + bcrypt</text>
+
+  <rect x="870" y="258" width="250" height="100" rx="10" fill="#0B2E1F"/>
+  <text x="995" y="280" text-anchor="middle" font-size="13" fill="#F2B229" font-weight="700">NextAuth</text>
+  <text x="995" y="300" text-anchor="middle" font-size="11" fill="#E7F2EC">Credentials provider</text>
+  <text x="995" y="316" text-anchor="middle" font-size="11" fill="#E7F2EC">JWT sessions</text>
+  <text x="995" y="332" text-anchor="middle" font-size="11" fill="#E7F2EC">CUSTOMER / ADMIN roles</text>
+
+  <line x1="455" y1="380" x2="455" y2="420" stroke="#4B5D55" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="725" y1="380" x2="240" y2="430" stroke="#4B5D55" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="725" y1="380" x2="960" y2="430" stroke="#4B5D55" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="995" y1="380" x2="725" y2="430" stroke="#4B5D55" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Data + services layer -->
+  <rect x="40" y="430" width="340" height="140" rx="14" fill="#ffffff" stroke="#1E9E5A" stroke-width="2"/>
+  <text x="210" y="455" text-anchor="middle" font-size="14" font-weight="700" fill="#0B2E1F">Neon PostgreSQL</text>
+  <text x="210" y="478" text-anchor="middle" font-size="11" fill="#4B5D55">via Prisma ORM</text>
+  <text x="60" y="500" font-size="11" fill="#10241A">• Leads, CalculatorSubmission</text>
+  <text x="60" y="516" font-size="11" fill="#10241A">• Users, SolarSystem, GenerationReading</text>
+  <text x="60" y="532" font-size="11" fill="#10241A">• BlogPost, Testimonial, PressMention</text>
+  <text x="60" y="548" font-size="11" fill="#10241A">• LoginAttempt (audit trail)</text>
+
+  <rect x="430" y="430" width="340" height="140" rx="14" fill="#ffffff" stroke="#F2B229" stroke-width="2"/>
+  <text x="600" y="455" text-anchor="middle" font-size="14" font-weight="700" fill="#0B2E1F">Notification Services</text>
+  <text x="450" y="480" font-size="11" fill="#10241A">• Resend — lead + confirmation emails</text>
+  <text x="450" y="500" font-size="11" fill="#10241A">• Meta WhatsApp Cloud API</text>
+  <text x="450" y="520" font-size="11" fill="#10241A">  (lead alerts to business number)</text>
+  <text x="450" y="544" font-size="10" fill="#4B5D55">Both fail gracefully — DB write always</text>
+  <text x="450" y="558" font-size="10" fill="#4B5D55">happens first; notifications are best-effort</text>
+
+  <rect x="820" y="430" width="340" height="140" rx="14" fill="#ffffff" stroke="#0B2E1F" stroke-width="2"/>
+  <text x="990" y="455" text-anchor="middle" font-size="14" font-weight="700" fill="#0B2E1F">Upstash Redis</text>
+  <text x="840" y="480" font-size="11" fill="#10241A">• Sliding-window rate limiting</text>
+  <text x="840" y="500" font-size="11" fill="#10241A">  for all public-facing API routes</text>
+  <text x="840" y="524" font-size="10" fill="#4B5D55">In-memory fallback used only in local</text>
+  <text x="840" y="538" font-size="10" fill="#4B5D55">dev when Upstash isn't configured</text>
+
+  <!-- Future integration -->
+  <rect x="40" y="610" width="1120" height="110" rx="14" fill="#FEF8E9" stroke="#F2B229" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="60" y="635" font-size="14" font-weight="700" fill="#0B2E1F">Future Integration (documented, not yet connected)</text>
+  <text x="60" y="660" font-size="12" fill="#10241A">Real inverter monitoring APIs (Growatt / Solis / Huawei FusionSolar) → feeds GenerationReading table → powers</text>
+  <text x="60" y="680" font-size="12" fill="#10241A">live customer dashboard charts. Until connected, the dashboard shows an honest "not connected" state instead of fake data.</text>
+  <text x="60" y="702" font-size="11" fill="#4B5D55">See docs/MONITORING_INTEGRATION.md for the exact integration pattern.</text>
+</svg>

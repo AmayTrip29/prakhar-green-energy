@@ -1,0 +1,251 @@
+// Prisma schema for Prakhar Green Energy Solutions
+// Database: PostgreSQL (Neon recommended — see docs/DEPLOYMENT.md)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+// ──────────────────────────────────────────────
+// Leads & Conversion
+// ──────────────────────────────────────────────
+
+enum PropertyType {
+  HOME
+  HOUSING_SOCIETY
+  COMMERCIAL
+}
+
+enum LeadSource {
+  SCHEDULE_VISIT_MODAL
+  CALCULATOR
+  CONTACT_PAGE
+  CAREERS
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  SITE_VISIT_SCHEDULED
+  SITE_VISIT_DONE
+  PROPOSAL_SENT
+  WON
+  LOST
+}
+
+model Lead {
+  id            String       @id @default(cuid())
+  fullName      String
+  phone         String
+  email         String?
+  pincode       String?
+  monthlyBill   Int?
+  propertyType  PropertyType @default(HOME)
+  city          String?
+  message       String?
+  source        LeadSource   @default(SCHEDULE_VISIT_MODAL)
+  status        LeadStatus   @default(NEW)
+  notes         String?
+  emailSent     Boolean      @default(false)
+  whatsappSent  Boolean      @default(false)
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([phone])
+  @@index([status])
+  @@index([createdAt])
+  @@map("leads")
+}
+
+model CalculatorSubmission {
+  id              String   @id @default(cuid())
+  pincode         String
+  monthlyBill     Int
+  estimatedSizeKw Float
+  estimatedSubsidy Int
+  estimatedSavingsPct Int
+  estimatedPaybackYrs Float
+  leadId          String?
+  ipAddress       String?
+  createdAt       DateTime @default(now())
+
+  @@index([pincode])
+  @@index([createdAt])
+  @@map("calculator_submissions")
+}
+
+// ──────────────────────────────────────────────
+// Auth (customers + admins) — NextAuth compatible
+// ──────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  SUPER_ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  phone         String?   @unique
+  passwordHash  String
+  role          Role      @default(CUSTOMER)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  solarSystem   SolarSystem?
+  sessions      Session[]
+  loginAttempts LoginAttempt[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  userId    String?
+  email     String
+  success   Boolean
+  ipAddress String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([email, createdAt])
+  @@map("login_attempts")
+}
+
+// ──────────────────────────────────────────────
+// Customer Solar System Monitoring
+// ──────────────────────────────────────────────
+// NOTE: This schema models real inverter-monitoring data (Growatt / Solis /
+// Huawei FusionSolar style). Until an inverter API is wired up via
+// INVERTER_API_PROVIDER in .env, the dashboard reads `monitoringConnected`
+// and shows a clear "Connect your monitoring device" empty state instead of
+// any invented numbers. See docs/MONITORING_INTEGRATION.md.
+
+model SolarSystem {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capacityKw          Float
+  installationDate    DateTime?
+  inverterBrand       String?
+  inverterSerialNo    String?
+  monitoringConnected Boolean  @default(false)
+  city                String?
+  address              String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  generationReadings GenerationReading[]
+  referrals          Referral[]
+
+  @@map("solar_systems")
+}
+
+model GenerationReading {
+  id            String      @id @default(cuid())
+  solarSystemId String
+  solarSystem   SolarSystem @relation(fields: [solarSystemId], references: [id], onDelete: Cascade)
+  date          DateTime
+  kwhGenerated  Float
+  rupeesSaved   Float
+  co2AvoidedKg  Float
+  source        String      @default("manual") // "manual" | "inverter_api"
+  createdAt     DateTime    @default(now())
+
+  @@unique([solarSystemId, date])
+  @@index([solarSystemId, date])
+  @@map("generation_readings")
+}
+
+model Referral {
+  id              String      @id @default(cuid())
+  solarSystemId   String
+  solarSystem     SolarSystem @relation(fields: [solarSystemId], references: [id], onDelete: Cascade)
+  referredName    String
+  referredPhone   String
+  rewardAmount    Int         @default(0)
+  status          String      @default("PENDING") // PENDING | INSTALLED | REWARDED
+  createdAt       DateTime    @default(now())
+
+  @@map("referrals")
+}
+
+// ──────────────────────────────────────────────
+// Content — Blog
+// ──────────────────────────────────────────────
+
+model BlogPost {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  excerpt       String
+  content       String   @db.Text
+  coverImageUrl String?
+  authorName    String   @default("Prakhar Editorial")
+  published     Boolean  @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published, publishedAt])
+  @@map("blog_posts")
+}
+
+// ──────────────────────────────────────────────
+// Press mentions ("Powering Headlines" section)
+// ──────────────────────────────────────────────
+
+model PressMention {
+  id          String   @id @default(cuid())
+  publication String
+  headline    String
+  url         String?
+  publishedOn DateTime
+  createdAt   DateTime @default(now())
+
+  @@map("press_mentions")
+}
+
+// ──────────────────────────────────────────────
+// Testimonials
+// ──────────────────────────────────────────────
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  customerName String
+  city         String
+  quote        String
+  rating       Int      @default(5)
+  imageUrl     String?
+  videoUrl     String?
+  billBefore   Int?
+  billAfter    Int?
+  published    Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@map("testimonials")
+}
